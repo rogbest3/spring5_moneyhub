@@ -1,4 +1,4 @@
-package com.moneyhub.web.controller;
+package com.moneyhub.web.cmm;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class HomeController {
+public class CommonCtrl {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CommonCtrl.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -27,7 +27,6 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		//
-		return "home";
+		return "index";
 	}
-	
 }
