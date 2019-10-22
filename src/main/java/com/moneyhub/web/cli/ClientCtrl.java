@@ -38,7 +38,7 @@ public class ClientCtrl {
 		return map;
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/")
 	public Client login(@RequestBody Client param){
 		logger.info("AJAX가 보낸 로그인 아이디와 비번 {} ", param.getCid() + ", " + param.getPwd());
 		client.setCid(param.getCid());
