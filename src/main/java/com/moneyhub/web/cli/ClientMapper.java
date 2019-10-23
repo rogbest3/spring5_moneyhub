@@ -1,5 +1,9 @@
 package com.moneyhub.web.cli;
 
-public class ClientMapper {
+import org.springframework.stereotype.Repository;
 
+@Repository
+public interface ClientMapper {
+	public void insertClient(Client client);
+	public Client selectByIdPw(Client client);
 }

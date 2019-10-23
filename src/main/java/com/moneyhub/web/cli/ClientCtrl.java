@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.moneyhub.web.cmm.IConsumer;
+import com.moneyhub.web.cmm.IFunction;
 import com.moneyhub.web.utl.Printer;
 
 import lombok.extern.log4j.Log4j;
@@ -24,27 +26,18 @@ public class ClientCtrl {
 	@Autowired Map<String, Object> map;
 	@Autowired Client client;
 	@Autowired Printer printer;
+	@Autowired ClientMapper clinetMapper;	// 클래식 자바에서는 바로 mapper 연결하면 안되지만 모던자바에선 사용
 	
 	@PostMapping("/")	//	create - 파라미터 없으면
-	public Map<?,?> join(@RequestBody Client param) {	
-
-		HashMap<String, Object> map = new HashMap<>();
-	//	logger.info("AJAX가 보낸 정보 ", param.toString());
-		printer.accept("람다 프린터가 출력한 값 " + param.toString());
-		map.put("cid", param.getCid());
-		map.put("pwd", param.getPwd());
-//		clientServiceimpl.join(param);
-//		logger.info("map에 담긴 아이디와 비번 {} ", map.get("cid") + ", " + map.get("pwd"));
-		return map;
+	public String join(@RequestBody Client param) {	
+		IConsumer<Client> c = t -> clinetMapper.insertClient(param);
+		c.accept(param);
+		return "Success";
 	}
 	
 	@PostMapping("/")
 	public Client login(@RequestBody Client param){
-		logger.info("AJAX가 보낸 로그인 아이디와 비번 {} ", param.getCid() + ", " + param.getPwd());
-		client.setCid(param.getCid());
-		client.setPwd(param.getPwd());
-	//	param = clientServiceimpl.login(param);
-		logger.info("client에 담긴 사용자 정보 : {}", client.toString());
-		return param;
-	}
+		IFunction<Client, Client> f = t -> clinetMapper.selectByIdPw(param);
+		return f.apply(param);
+	}	
 }

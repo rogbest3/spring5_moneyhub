@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class Client {
 
 	private String cstate, level, hubAccount, cid, pwd, reg, wdd;
-	
+
 }

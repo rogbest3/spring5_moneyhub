@@ -44,7 +44,7 @@ auth =(()=>{
 				e.preventDefault();	//	form tag 무력화시킴 form은 SOAP방식이기 때문에 AJAX 안먹힘
 
 				$.ajax({
-					url : _+'/client/join',
+					url : _+'/clients',
 					type : 'POST',
 					dataType : 'json',
 					data : JSON.stringify({ 
@@ -84,7 +84,7 @@ auth =(()=>{
 			click : e=>{
 				e.preventDefault()
 				$.ajax({
-					url : _+'/client/login',
+					url : _+'/clients',
 					type : 'POST',
 					dataType : 'json',
 					data : JSON.stringify({ 

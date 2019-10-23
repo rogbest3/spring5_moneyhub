@@ -9,20 +9,18 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.moneyhub.web" })
+@ComponentScan(basePackages = { "com.moneyhub.web.cmm" })
 public class ServletConfig implements WebMvcConfigurer{
 
 	public void configureViewResolvers(ViewResolverRegistry registry) {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setViewClass(JstlView.class);
         bean.setPrefix("/WEB-INF/views/");
-        bean.setSuffix(".jsp");
-        
+        bean.setSuffix(".jsp");  
         registry.viewResolver(bean);
     }
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
-        .addResourceLocations("/resources/");
-        
+        .addResourceLocations("/resources/");    
     }
 }
