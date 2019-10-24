@@ -28,15 +28,12 @@ public class ClientCtrl {
 	@Autowired Printer printer;
 	@Autowired ClientMapper clientMapper;	// 클래식 자바에서는 바로 mapper 연결하면 안되지만 모던자바에선 사용
 	
-	@GetMapping("/{cid}")
+	@GetMapping("/{cid}/exist")
 	public Map<?, ?> existId(@PathVariable String cid){
 		IFunction<String, Integer> f = t -> clientMapper.existId(cid);
-		if(f.apply(cid) == 0)
-			map.put("msg", "Success");
-		else
-			map.put("msg", "Fail");
 		map.clear();
-		map.put("msg", f.apply(cid)==0 ? "Success" : "Fail");
+		map.put("msg", f.apply(cid) == 0 ? "Success" : "Fail");
+		printer.accept("map : "+ map);
 		return map;
 	}
 	
@@ -50,28 +47,29 @@ public class ClientCtrl {
 		return map;
 	}
 	
-	@PostMapping("/{cid}")
+	@PostMapping("/{cid}/login")
 	public Client login(@PathVariable String cid, @RequestBody Client param){
+		printer.accept("login 들어옴"+ cid+", "+ param.toString());
 		IFunction<Client, Client> f = t -> clientMapper.selectClientByIdPw(param);
 		return f.apply(param);
 	}	
-	@GetMapping("/{cid}")
-	public Client searchClientById(@PathVariable String cid, @RequestBody Client param) {
-		IFunction<Client, Client> s = t -> clientMapper.selectClientByIdPw(param);
-		return s.apply(param);
-	}
-	
-	@PutMapping("/{cid}")
-	public String updataClient(@PathVariable String cid, @RequestBody Client param) {
-		IConsumer<Client> c = t -> clientMapper.insertClient(param);
-		c.accept(param);
-		return "Success";
-	}
-	@DeleteMapping("/{cid}")
-	public String removeClient(@PathVariable String cid, @RequestBody Client param) {
-		IConsumer<Client> c = t -> clientMapper.insertClient(param);
-		c.accept(param);
-		return "Success";
-	}
-	
+//	@GetMapping("/{cid}")
+//	public Client searchClientById(@PathVariable String cid, @RequestBody Client param) {
+//		IFunction<Client, Client> s = t -> clientMapper.selectClientByIdPw(param);
+//		return s.apply(param);
+//	}
+//	
+//	@PutMapping("/{cid}")
+//	public String updataClient(@PathVariable String cid, @RequestBody Client param) {
+//		IConsumer<Client> c = t -> clientMapper.insertClient(param);
+//		c.accept(param);
+//		return "Success";
+//	}
+//	@DeleteMapping("/{cid}")
+//	public String removeClient(@PathVariable String cid, @RequestBody Client param) {
+//		IConsumer<Client> c = t -> clientMapper.insertClient(param);
+//		c.accept(param);
+//		return "Success";
+//	}
+//	
 }

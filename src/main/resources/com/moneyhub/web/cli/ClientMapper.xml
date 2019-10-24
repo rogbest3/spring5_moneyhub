@@ -24,5 +24,9 @@
             #{cstate}, #{level}, #{hubAccount}, #{cid}, #{pwd}, #{reg}, #{wdd}
         )
     </insert>
+    <select id="existId" resultType="Integer" >
+        SELECT COUNT(CID) COUNT FROM CLIENT
+		WHERE CID LIKE #{cid}
+    </select>
   
 </mapper>
