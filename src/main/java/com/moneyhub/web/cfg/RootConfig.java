@@ -19,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 //@Import({
 //	MybatisConfig.class, ServletConfig.class
 //})
-
+//
 public class RootConfig {
 	@Bean
 	public DataSource dataSource() {
