@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.moneyhub.web.config.RootConfig;
+import com.moneyhub.web.cfg.RootConfig;
 
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;

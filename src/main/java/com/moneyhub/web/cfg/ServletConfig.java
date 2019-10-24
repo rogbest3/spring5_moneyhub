@@ -1,4 +1,4 @@
-package com.moneyhub.web.config;
+package com.moneyhub.web.cfg;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

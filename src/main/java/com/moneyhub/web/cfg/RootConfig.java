@@ -1,4 +1,4 @@
-package com.moneyhub.web.config;
+package com.moneyhub.web.cfg;
 
 import javax.sql.DataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -25,16 +25,5 @@ public class RootConfig {
 		HikariDataSource dataSource = new HikariDataSource(hikariConfig);
 		return dataSource;
 	}
-	
-	@Bean
-    public SqlSessionFactory sqlSessionFactory() throws Exception {
-      SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
-      factoryBean.setDataSource(dataSource());
-      return factoryBean.getObject();
-    }
-    
-    @Bean
-    public SqlSessionTemplate sqlSession() throws Exception {
-      return new SqlSessionTemplate(sqlSessionFactory());
-    }
+
 }

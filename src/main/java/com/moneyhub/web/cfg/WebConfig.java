@@ -1,4 +1,4 @@
-package com.moneyhub.web.config;
+package com.moneyhub.web.cfg;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
