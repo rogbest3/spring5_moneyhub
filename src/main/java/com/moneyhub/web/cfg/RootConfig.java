@@ -8,12 +8,18 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @MapperScan(basePackages = {"com.moneyhub.web"})
 @ComponentScan(basePackages = { "com.moneyhub.web" })
+//파일 인식 못할때 사용
+//@Import({
+//	MybatisConfig.class, ServletConfig.class
+//})
+
 public class RootConfig {
 	@Bean
 	public DataSource dataSource() {
