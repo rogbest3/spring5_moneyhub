@@ -42,9 +42,9 @@ auth =(()=>{
 //			type : 'submit',
 			click : e=>{
 				e.preventDefault();	//	form tag 무력화시킴 form은 SOAP방식이기 때문에 AJAX 안먹힘
-
+				alert('join 클릭')
 				$.ajax({
-					url : _+'/clients',
+					url : _+'/clients/',
 					type : 'POST',
 					dataType : 'json',
 					data : JSON.stringify({ 
@@ -55,9 +55,11 @@ auth =(()=>{
 						}),
 					contentType : 'application/json',
 					success : d => {	// sender, d가 자바에서 map, d.cid map의 키값
-						alert('AJAX 성공 아이디 : '+ d.cid + ', 성공 비번 : ' + d.pwd);
-						login()
-						
+						alert('AJAX 성공 아이디 : '+ d.msg);
+						if(d.msg === '')
+							alert('회원가입 실패')
+						else
+							login()
 					},	
 					error : e => {		// receiver, 
 						alert('AJAX 실패');
@@ -84,7 +86,7 @@ auth =(()=>{
 			click : e=>{
 				e.preventDefault()
 				$.ajax({
-					url : _+'/clients',
+					url : _+'/clients/',
 					type : 'POST',
 					dataType : 'json',
 					data : JSON.stringify({ 

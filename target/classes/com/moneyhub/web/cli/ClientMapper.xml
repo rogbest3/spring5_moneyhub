@@ -19,7 +19,7 @@
         SELECT * FROM CLIENT
 		WHERE CID LIKE #{cid} AND PWD LIKE #{pwd}
     </select>
-    <insert id="insertClient" >
+    <insert id="insertClient" parameterType="Client" >
         insert into client (cstate, level, hub_account, cid, pwd, reg, wdd) values (
             #{cstate}, #{level}, #{hubAccount}, #{cid}, #{pwd}, #{reg}, #{wdd}
         )
