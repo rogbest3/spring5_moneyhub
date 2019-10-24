@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.moneyhub.web.cmm.IConsumer;
 import com.moneyhub.web.cmm.IFunction;
+import com.moneyhub.web.cmm.IPredicate;
 import com.moneyhub.web.utl.Printer;
 import lombok.extern.log4j.Log4j;
 
@@ -27,11 +28,26 @@ public class ClientCtrl {
 	@Autowired Printer printer;
 	@Autowired ClientMapper clientMapper;	// 클래식 자바에서는 바로 mapper 연결하면 안되지만 모던자바에선 사용
 	
+	@GetMapping("/{cid}")
+	public Map<?, ?> existId(@PathVariable String cid){
+		IFunction<String, Integer> f = t -> clientMapper.existId(cid);
+		if(f.apply(cid) == 0)
+			map.put("msg", "Success");
+		else
+			map.put("msg", "Fail");
+		map.clear();
+		map.put("msg", f.apply(cid)==0 ? "Success" : "Fail");
+		return map;
+	}
+	
 	@PostMapping("/")	//	create - 파라미터 없으면
-	public String join(@RequestBody Client param) {	
+	public Map<?, ?> join(@RequestBody Client param) {	
+		printer.accept("join 들어옴"+param.toString());
 		IConsumer<Client> c = t -> clientMapper.insertClient(param);
-		c.accept(param);
-		return "Success";
+		c.accept(param); 
+		map.clear();
+		map.put("msg", "Success");
+		return map;
 	}
 	
 	@PostMapping("/{cid}")
