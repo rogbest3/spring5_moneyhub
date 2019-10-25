@@ -12,3 +12,10 @@ function Session(x){	// 자바스크립트
 		img : ()=>{ return sessionStorage.getItem('img');}
 	}
 }
+function User(x){
+	alert('>>>>'+x)
+	sessionStorage.setItem('cid', x)
+	return {
+		cid : ()=> { return sessionStorage.getItem('cid')}
+	}
+}

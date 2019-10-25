@@ -2,25 +2,31 @@
 var auth = auth || {};
 auth =(()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.';
-	let _, js, auth_vuejs, brd_vuejs;
+	let _, js, auth_vue_js, brd_js, brd_vue_js, router_js;
 	let init =()=>{
 		_ = $.ctx()
 		js = $.js()
-		auth_vuejs = js + '/vue/auth_vue.js'
-		brd_vuejs = js + '/vue/brd_vue.js'
+		auth_vue_js = js + '/vue/auth_vue.js'
+		brd_js = js + '/brd/brd.js'
+		router_js = js + '/cmm/router.js'
 	}
 	let onCreate =()=>{
 		init()
-		$.getScript(auth_vuejs).done(()=>{
+		$.when(
+    		$.getScript(auth_vue_js),	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
+    		$.getScript(brd_js)
+    	)	
+    	.done(()=>{
 			setContentView()
 			$('#login_img_btn').click(e=>{
 				e.preventDefault()
+				loginPage()
 				login()
 		    		   
 			})	
 		}).fail(()=>{alert(WHEN_ERR)})
 	}
-	let setContentView =()=>{
+	let setContentView =()=>{	// 첫화면
 		main()
 	}
 	let main =()=>{
@@ -36,23 +42,22 @@ auth =(()=>{
     	.appendTo('#login_img_btn')	
 	}
 
-
-	let login =y=>{
-		let x = { css:$.css(), img:$.img() }
+	let loginPage =()=>{
 		$('head')
-		.html( auth_vue.login_head(x) )
+		.html( auth_vue.login_head({ css:$.css(), img:$.img() }) )
 		$('body')
 		.addClass('text-center')
-		.html( auth_vue.login_body(x) )
+		.html( auth_vue.login_body({ css:$.css(), img:$.img() }) )
+	}
+	let login =()=>{
 		//<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
 		$('<button>', {
-			type : 'submit',
-			text : 'Sign in',
+		//	type : 'submit',
+			text : '로그인',
 			click : e=>{
-				alert('로그인 클릭')
 				e.preventDefault()
 				$.ajax({
-					url : _+'/clients/' + y + '/login',
+					url : _+'/clients/' + $('#cid').val() + '/login',
 					type : 'POST',
 					dataType : 'json',
 					data : JSON.stringify({ 
@@ -62,8 +67,12 @@ auth =(()=>{
 					contentType : 'application/json',
 					success : d =>{
 						alert(d.hubAccount + '님 환영합니다.')
-						$.getScript(brd_vuejs).done(()=>{
-							mypage2()
+						
+							$.getScript(router_js, ()=>{
+								$.extend(new User(d.cid)) })
+							.done(()=>{
+	
+							brd.onCreate()
 						}).fail(()=>{alert(WHEN_ERR)})
 						
 					},
@@ -75,43 +84,45 @@ auth =(()=>{
 		})
 		.addClass('btn btn-lg btn-primary btn-block')
 		.appendTo('#btn_login')
+		
 		$('#a_go_join').click(e=>{
 			e.preventDefault()
 			$('head').html( auth_vue.join_head() )
 			$('body').html( auth_vue.join_body() ) 
+			$('#cid').keyup(()=>{
+				if($('#cid').val().length > 2){
+					$.ajax({
+						url : _+'/clients/'+$('#cid').val()+'/exist',
+						contentType : 'application/json',
+						success : d => {
+							if(d.msg === 'Success'){	// 중복 X
+								$('#dupl_check')
+								.val('사용가능한 ID 입니다')	// input 안에라 text가 아니라 val, text는 빈곳 
+								.css('color','blue')
+							}		
+							else{
+								$('#dupl_check')
+								.val('이미 사용한 ID 입니다')
+								.css('color','red')
+							}
+						}, 
+						error : e =>{
+							alert('existId AJAX 실패')
+						}
+					})
+				}	
+			})
 			$('<button>', {
 				text : '회원가입',	//	값을 주면 세터가 됨.
 				href : '#',
 //					type : 'submit',
 				click : e=>{
 					e.preventDefault();	//	form tag 무력화시킴 form은 SOAP방식이기 때문에 AJAX 안먹힘
-					if(!existId($('#clientid').val())){
-						alert('가입 성공')
-						join()
-					}
-					else{
-						alert('ID 변경 후 가입')
-					}	
+					join()	
 				}
 			})
 			.addClass('btn btn-primary btn-lg btn-block')
 	    	.appendTo('#join_btn')	
-	    	$('<button>', {
-				text : 'ID 중복체크',	//	값을 주면 세터가 됨.
-				href : '#',
-//				type : 'submit',
-				click : e=>{
-					e.preventDefault();	//	form tag 무력화시킴 form은 SOAP방식이기 때문에 AJAX 안먹힘
-					if(!existId($('#clientid').val())){
-						alert('ID 중복없음')
-					}
-					else{
-						alert('ID 중복')
-					}	
-				}
-			})
-	    	.addClass('btn btn-secondary')
-	    	.appendTo('#exist_btn')
 		})
 	}
 	let mypage =()=>{
@@ -120,58 +131,36 @@ auth =(()=>{
 		
 	}
 	let join =()=>{
-		alert('join 클릭')
 		$.ajax({
 			url : _+'/clients/',
 			type : 'POST',
 			dataType : 'json',
 			data : JSON.stringify({ 
-				cid : $('#clientid').val(), 
-				pwd : $('#password').val(),
+				cid : $('#cid').val(), 
+				pwd : $('#pwd').val(),
 				hubAccount : $('#hubAccount').val(),
 				reg : $('#reg').val()
 				}),
 			contentType : 'application/json',
 			success : d => {	// sender, d가 자바에서 map, d.cid map의 키값
 				alert('AJAX 성공 아이디 : '+ d.msg);
-				if(d.msg === '')
+				if(d.msg === 'Success'){
+					loginPage()
+					login()
+				}else{
 					alert('회원가입 실패')
-				else
-					login($('#cid').val())
+				}
+				
 			},	
 			error : e => {		// receiver, 
 				alert('join AJAX 실패');
 			}		
 		})
+	}
 
-	}
-	let existId =x=>{
-		$.ajax({
-			url : _+'/clients/'+x+'/exist',
-			type : 'GET',
-			contentType : 'application/json',
-			success : d => {
-				if(d.msg === 'Success'){	// 중복 X
-					alert(d.msg + ' - existId X')
-					return false
-				}		
-				else{
-					alert(d.msg + ' - existId O')
-					return true
-				}
-			}, 
-			error : e =>{
-				alert('existId AJAX 실패')
-			}
-		})
-	}
-	let mypage2 =()=>{
-		$('head').html(brd_vue.brd_head())
-		$('body')
-		.html( brd_vue.brd_body())
-		.addclass('bg-light')
-	}
-	return{onCreate : onCreate, main, join, login, mypage, mypage2, existId}	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
+
+	
+	return{onCreate : onCreate, main, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
 })();
 
 

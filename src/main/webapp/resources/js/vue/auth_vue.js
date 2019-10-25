@@ -4,9 +4,11 @@ auth_vue ={
 	main_form : x=>{
 		return '<link rel="stylesheet" href="'+x.css+'/style.css" />'+
 		'<link rel="stylesheet" href="'+x.css+'/head_style.css" />'+
+		'<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">'+
 		'<div class="wrapper" >'+
 		'	<div class="header" >'+
 		'		<div class="header_1">'+
+		'			<i class="fab fa-cc-amazon-pay fa-3x"></i>'+
 		'			<a class="navbar-brand " href="#">Moneyhub</a>'+
 		'			  '+
 		'		</div>'+
@@ -150,23 +152,27 @@ auth_vue ={
 		'      </form>'+
 		'    </div>'+
 		'    <div class="col-md-8 order-md-1">'+
-		'      <h4 class="mb-3">Billing address</h4>'+
+		'      <h4 class="mb-3">회원 가입</h4>'+
 		'      <form class="needs-validation" novalidate="">'+
 		'        <div class="row">'+
 		'          <div class="col-md-6 mb-3">'+
-		'            <label for="clientid">CLIENT_ID</label>'+
-		'            <input type="text" class="form-control" id="clientid" placeholder="" value="" required="">'+
+		'            <label for="cid">아이디</label>'+
+		'            <input type="text" class="form-control" id="cid" placeholder="" value="" required="">'+
 		'            <div class="invalid-feedback">'+
 		'              Valid first name is required.'+
 		'            </div>'+
 		'          </div>'+
 		'          <div class="col-md-6 mb-3">'+
-		'            <label for="password">PASSWORD</label>'+
-		'            <input type="text" class="form-control" id="password" placeholder="" value="" required="">'+
+		'            <label for="password">ID 중복체크</label>'+
+		'            <input type="text" class="form-control" id="dupl_check" placeholder="" value="" required="">'+
 		'            <div class="invalid-feedback">'+
 		'              Valid last name is required.'+
 		'            </div>'+
 		'          </div>'+
+		'        </div>'+
+		'		<div class="mb-3">'+
+		'          <label for="address2">비밀번호 <span class="text-muted">(Optional)</span></label>'+
+		'          <input type="text" class="form-control" id="pwd" placeholder="Apartment or suite">'+
 		'        </div>'+
 		'		<div class="mb-3">'+
 		'          <label for="username">Hub Account</label>'+
@@ -193,10 +199,6 @@ auth_vue ={
 		'          <div class="invalid-feedback">'+
 		'            Please enter your shipping address.'+
 		'          </div>'+
-		'        </div>'+
-		'		<div class="mb-3">'+
-		'          <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>'+
-		'          <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">'+
 		'        </div>'+
 		'		<div class="row">'+
 		'          <div class="col-md-5 mb-3">'+

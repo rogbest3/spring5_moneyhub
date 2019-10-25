@@ -25,7 +25,7 @@
         )
     </insert>
     <select id="existId" resultType="Integer" >
-        SELECT COUNT(CID) COUNT FROM CLIENT
+        SELECT COUNT(*) FROM CLIENT
 		WHERE CID LIKE #{cid}
     </select>
   
