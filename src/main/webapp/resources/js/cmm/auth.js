@@ -13,8 +13,8 @@ auth =(()=>{
 	let onCreate =()=>{
 		init()
 		$.when(
-    		$.getScript(auth_vue_js),	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
-    		$.getScript(brd_js)
+    		$.getScript(auth_vue_js)	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
+    //		$.getScript(brd_js)
     	)	
     	.done(()=>{
 			setContentView()
@@ -48,6 +48,8 @@ auth =(()=>{
 		$('body')
 		.addClass('text-center')
 		.html( auth_vue.login_body({ css:$.css(), img:$.img() }) )
+		$('#cid').val('1')	//	input에 값 직접입력
+		$('#pwd').val('1')	
 	}
 	let login =()=>{
 		//<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
@@ -66,14 +68,23 @@ auth =(()=>{
 					}),
 					contentType : 'application/json',
 					success : d =>{
-						alert(d.hubAccount + '님 환영합니다.')
+						alert(d.hubAccount + '(계좌번호)님 환영합니다.')
 						
-							$.getScript(router_js, ()=>{
-								$.extend(new User(d.cid)) })
+							$.when(
+								$.getScript(brd_js),
+								$.getScript(router_js, ()=>{
+									$.extend(new User(d)) })	
+							).done(()=>{
+								brd.onCreate()
+							}).fail(()=>{
+								alert(WHEN_ERR)
+							})
+								
+						/*	$.getScript(router_js, ()=>{
+								$.extend(new User(d)) })
 							.done(()=>{
-	
-							brd.onCreate()
-						}).fail(()=>{alert(WHEN_ERR)})
+								brd.onCreate()
+							}).fail(()=>{alert(WHEN_ERR)})*/
 						
 					},
 					error : e=>{

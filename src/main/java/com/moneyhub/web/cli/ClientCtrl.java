@@ -53,23 +53,24 @@ public class ClientCtrl {
 		IFunction<Client, Client> f = t -> clientMapper.selectClientByIdPw(param);
 		return f.apply(param);
 	}	
-//	@GetMapping("/{cid}")
-//	public Client searchClientById(@PathVariable String cid, @RequestBody Client param) {
-//		IFunction<Client, Client> s = t -> clientMapper.selectClientByIdPw(param);
-//		return s.apply(param);
-//	}
-//	
-//	@PutMapping("/{cid}")
-//	public String updataClient(@PathVariable String cid, @RequestBody Client param) {
-//		IConsumer<Client> c = t -> clientMapper.insertClient(param);
-//		c.accept(param);
-//		return "Success";
-//	}
-//	@DeleteMapping("/{cid}")
-//	public String removeClient(@PathVariable String cid, @RequestBody Client param) {
-//		IConsumer<Client> c = t -> clientMapper.insertClient(param);
-//		c.accept(param);
-//		return "Success";
-//	}
-//	
+	@GetMapping("/{cid}")
+	public Client searchClientById(@PathVariable String cid, @RequestBody Client param) {
+		IFunction<Client, Client> s = t -> clientMapper.selectClientByIdPw(param);
+		return s.apply(param);
+	}
+	
+	@PutMapping("/{cid}")
+	public String updataClient(@PathVariable String cid, @RequestBody Client param) {
+		IConsumer<Client> c = t -> clientMapper.insertClient(param);
+		c.accept(param);
+		return "Success";
+	}
+	@DeleteMapping("/{cid}")
+	public String removeClient(@PathVariable String cid, @RequestBody Client param) {
+		IConsumer<Client> c = t -> clientMapper.insertClient(param);
+		c.accept(param);
+		return "Success";
+	}
+	
+	
 }

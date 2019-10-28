@@ -17,5 +17,4 @@
 <!--	alert('여기에 컨텍스트');-->
 	app.run('<%=application.getContextPath()%>');
 </script>
-
 </html>

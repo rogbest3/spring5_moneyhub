@@ -13,9 +13,14 @@ function Session(x){	// 자바스크립트
 	}
 }
 function User(x){
-	alert('>>>>'+x)
-	sessionStorage.setItem('cid', x)
+	sessionStorage.setItem('cid', x.cid)
+	sessionStorage.setItem('pwd', x.pwd)
+	sessionStorage.setItem('hubAccount', x.hubAccount)
+	sessionStorage.setItem('reg', x.reg)
 	return {
-		cid : ()=> { return sessionStorage.getItem('cid')}
+		cid : ()=> { return sessionStorage.getItem('cid')},
+		pwd : ()=> { return sessionStorage.getItem('pwd')},
+		hubAccount : ()=> { return sessionStorage.getItem('hubAccount')},
+		reg : ()=> { return sessionStorage.getItem('reg')}
 	}
 }
