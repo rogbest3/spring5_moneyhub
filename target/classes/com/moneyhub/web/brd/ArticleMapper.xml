@@ -11,6 +11,21 @@
              #{cid}, #{boardType}, #{title}, #{content}
         )
     </insert>
-
+    <select id="countArticle" resultType="string">
+	    SELECT COUNT(ARTSEQ)
+		FROM ARTICLE
+    </select>
+    <select id="selectAll" resultType="Article">
+    	SELECT A.BOARD_TYPE AS boardType, A.* FROM ARTICLE A
+    </select>
+    <delete id="deleteArticle" parameterType="string">
+    	DELETE FROM ARTICLE 
+		WHERE ARTSEQ = #{artSeq}
+    </delete>
+    <update id="updateArticle" parameterType="Article">
+    	UPDATE ARTICLE 
+		SET TITLE = #{title}, CONTENT = #{content}
+		WHERE ARTSEQ = #{artSeq}
+    </update>
 <!--  artSeq, image, cid, comments, msg, rating, type, title, content; -->
 </mapper>
