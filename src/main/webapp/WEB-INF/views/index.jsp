@@ -11,7 +11,7 @@
 <script src="<%=application.getContextPath()%>/resources/js/vue/auth_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/vue/brd_vue.js"></script>
 <script src="<%=application.getContextPath()%>/resources/js/brd/brd.js"></script>
-
+<script src="<%=application.getContextPath()%>/resources/js/cmm/navi.js"></script>
 <script></script>
 <script>
 <!--	alert('여기에 컨텍스트');-->

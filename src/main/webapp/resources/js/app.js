@@ -2,7 +2,7 @@
 var app = app || {};
 app = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.';
-    let _, js, auth_js;            
+    let _, js, css, img, auth_js;            
     let run =x=> $.getScript(x + '/resources/js/cmm/router.js',()=>{
     		$.extend(new Session(x));
     	//	alert('컨텍스트 : ' + $.ctx());
@@ -11,6 +11,8 @@ app = (()=>{
     let init =()=>{
     	_ = $.ctx();
     	js = $.js();
+    	css = $.css()
+    	img = $.img()
     	auth_js = js + '/cmm/auth.js';
     //	alert('authjs 컨텍스트 값 : ' + authjs);
     }

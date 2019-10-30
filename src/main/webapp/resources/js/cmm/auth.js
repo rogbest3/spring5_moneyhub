@@ -2,19 +2,24 @@
 var auth = auth || {};
 auth =(()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.';
-	let _, js, auth_vue_js, brd_js, brd_vue_js, router_js;
+	let _, js, css, img, auth_vue_js, brd_js, brd_vue_js, router_js, cookie_js;
 	let init =()=>{
 		_ = $.ctx()
 		js = $.js()
+		css = $.css()
+		img = $.img()
 		auth_vue_js = js + '/vue/auth_vue.js'
 		brd_js = js + '/brd/brd.js'
 		router_js = js + '/cmm/router.js'
+		cookie_js = js + '/cmm/cookie.js'
 	}
 	let onCreate =()=>{
 		init()
 		$.when(
-    		$.getScript(auth_vue_js)	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
-    //		$.getScript(brd_js)
+    		$.getScript(auth_vue_js),	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
+    		$.getScript(brd_js),
+    		$.getScript(router_js),
+    		$.getScript(cookie_js)
     	)	
     	.done(()=>{
 			setContentView()
@@ -27,11 +32,7 @@ auth =(()=>{
 		}).fail(()=>{alert(WHEN_ERR)})
 	}
 	let setContentView =()=>{	// 첫화면
-		main()
-	}
-	let main =()=>{
-		let x = { css:$.css(), img:$.img() }
-		$('body').html( auth_vue.main_form(x) ) 
+		$('body').html( auth_vue.main_form({ css:$.css(), img:$.img() }) ) 
 		$('<img>', {
 			click : e=>{
 				e.preventDefault();	
@@ -70,17 +71,20 @@ auth =(()=>{
 					success : d =>{
 						alert(d.hubAccount + '(계좌번호)님 환영합니다.')
 						
-							$.when(
-								$.getScript(brd_js),
+						setCookie("CLIENTID", d.cid)
+						alert('저장된 쿠기 : ' + getCookie("CLIENTID"))
+						brd.onCreate()
+						
+						/*	$.when(
 								$.getScript(router_js, ()=>{
 									$.extend(new User(d)) })	
 							).done(()=>{
-								brd.onCreate()
+								brd.onCreate({_:_, js:js, css:css, img:img})
 							}).fail(()=>{
 								alert(WHEN_ERR)
 							})
 								
-						/*	$.getScript(router_js, ()=>{
+							$.getScript(router_js, ()=>{
 								$.extend(new User(d)) })
 							.done(()=>{
 								brd.onCreate()
@@ -169,9 +173,7 @@ auth =(()=>{
 		})
 	}
 
-
-	
-	return{onCreate : onCreate, main, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
+	return{ onCreate : onCreate, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
 })();
 
 

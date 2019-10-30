@@ -73,6 +73,7 @@ public class ArticleCtrl {
 	public Map<?, ?> count(){
 		printer.accept("count 들어옴");
 		ISupplier<String> c =  () -> articleMapper.countArticle();
+		map.clear();
 		map.put("count", c.get());
 		printer.accept("count : " + c.get());
 		return map;
@@ -96,6 +97,7 @@ public class ArticleCtrl {
 		printer.accept("delete로 들어옴");
 		IConsumer<String> d = t -> articleMapper.deleteArticle(artSeq);
 		d.accept(artSeq);
+		map.clear();
 		return map;
 	}
 }

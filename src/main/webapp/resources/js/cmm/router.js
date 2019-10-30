@@ -12,7 +12,9 @@ function Session(x){	// 자바스크립트
 		img : ()=>{ return sessionStorage.getItem('img');}
 	}
 }
-function User(x){
+
+
+/*function User(x){
 	sessionStorage.setItem('cid', x.cid)
 	sessionStorage.setItem('pwd', x.pwd)
 	sessionStorage.setItem('hubAccount', x.hubAccount)
@@ -23,4 +25,4 @@ function User(x){
 		hubAccount : ()=> { return sessionStorage.getItem('hubAccount')},
 		reg : ()=> { return sessionStorage.getItem('reg')}
 	}
-}
+}*/

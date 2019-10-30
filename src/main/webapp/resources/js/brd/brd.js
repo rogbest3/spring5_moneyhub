@@ -2,19 +2,29 @@
 var brd = brd || {}
 brd =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
-	let _, js, brd_vue_js, $cid
+	let _, js, css, img, brd_vue_js, navi_js, navi_vue_js
 	let init =()=>{
 		_ = $.ctx()
 		js = $.js()
+		css = $.css()
+		img = $.img()
 		brd_vue_js = js + '/vue/brd_vue.js'
-		$cid = $.cid()
-
+		navi_js = js + '/cmm/navi.js'
+		navi_vue_js = js + '/vue/navi_vue.js'
 	}
 	let onCreate =()=>{	// action은 전부 onCreate에서 
 		init()
-		$.getScript(brd_vue_js, ()=>{
+		$.when(
+			$.getScript(brd_vue_js),
+			$.getScript(navi_vue_js),
+			$.getScript(navi_js)
+		)
+		.done(()=>{
 			setContentView()
-			navigation()
+			navi.onCreate()
+		})
+		.fail(()=>{
+			alert(WHEN_ERR)
 		})
 	}
 	
@@ -24,6 +34,8 @@ brd =(()=>{
 		$('body')
 		.html( brd_vue.brd_body())
 		.addClass('bg-light')
+		
+		$(navi_vue.navi()).appendTo('#navi_id')
 		
 /*		$.ajax({
 			url : _+'/articles/count',
@@ -75,12 +87,13 @@ brd =(()=>{
 		})
 	}
 	
-	let write =()=>{
-		$('#recent_updates').html(brd_vue.brd_write( $cid ))
+	let write =(x)=>{
+		alert('write - _ : ' + x)
+		$('#recent_updates').html(brd_vue.brd_write())// $cid ))
 	//	$('#write').val('테스트')	// input에 값 직접 입력
 		$('#suggerstions').remove()
 		
-		$('#write_form input[name="writer"]').val($cid)
+		$('#write_form input[name="writer"]').val(getCookie("CLIENTID"))
 		
 		$('<input>', {
 		//	type : 'submit',
@@ -110,12 +123,12 @@ brd =(()=>{
 					title : $('#write_form input[name="title"]').val(),
 					content : $('#write_form textarea[name="content"]').val()
 			}
-			alert('ID : ' + json.cid)
+			alert('ID : ' + json.cid + ', _ : ' + x)
 /*			console.log('ID : ' + json.uid)			보이지 않음
 			console.log('글 제목 : ' + json.title)
 			console.log('글 내용 : ' + json.content )*/
 			$.ajax({
-				url : _+'/articles/',
+				url : '/web/articles/',
 				type : 'POST',
 				data : JSON.stringify(json),
 				dataType : 'json',
@@ -123,7 +136,6 @@ brd =(()=>{
 				success : d=>{
 					$('#recent_updates div.container-fluid').remove()
 					recent_updates()
-					
 				},
 				error : e=>{
 					alert('AJAX 실패')
@@ -132,23 +144,11 @@ brd =(()=>{
 		})
 	}
 	
-	let navigation =()=>{
-		$('<a>', {
-			href : '#',
-			click : e=>{
-				e.preventDefault()
-				
-				write()
-			},
-			text : '글쓰기'
-		})
-		.addClass('nav-link')
-		.appendTo('#go_write')	
-	}
+
 	let detail =x=>{
-		$('#recent_updates').html(brd_vue.brd_write( $cid ))
+		$('#recent_updates').html(brd_vue.brd_write( getCookie("CLIENTID") ))
 		$('#suggerstions').remove()		
-		$('#write_form input[name="writer"]').val($cid)
+		$('#write_form input[name="writer"]').val(getCookie("CLIENTID"))
 		$('#recent_updates div.container-fluid h1').html('ARTICLE DETAIL')
 //		$('#recent_updates div.container-fluid').html('<h1>ARTICLE DETAIL</h1>') - 하면 id, title, content 칸 모두 없어짐
 		$('#write_form input[name="writer"]').val(x.cid)
@@ -217,7 +217,7 @@ brd =(()=>{
 			})
 		})
 	}
-	return {onCreate}
+	return {onCreate, write}	// navi에서 brd.write()에서 불러오기 위해 return에 write 사용
 })();
 
 
