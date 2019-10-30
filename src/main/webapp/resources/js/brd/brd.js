@@ -34,7 +34,6 @@ brd =(()=>{
 		$('body')
 		.html( brd_vue.brd_body())
 		.addClass('bg-light')
-		
 		$(navi_vue.navi()).appendTo('#navi_id')
 		
 /*		$.ajax({
@@ -49,14 +48,15 @@ brd =(()=>{
 				alert('AJAX 실패')
 			}
 		})*/
-		recent_updates()
+		recent_updates(_)
 	}
 	
-	let recent_updates=()=>{
+	let recent_updates=(x)=>{
 		$('#recent_updates .media').remove()
 		$('#recent_updates .d-block').remove()
 		$('#suggerstions').remove()
-		$.getJSON(_+'/articles/', d=>{	// success이기 때문에 d를 가져올수 있음
+		alert('recent_updates 들어옴, _ : ' + x)
+		$.getJSON(x+'/articles/', d=>{	// success이기 때문에 d를 가져올수 있음
 			//	alert('글 목록 숫자 : ' + d.count)
 			//	$('#recent_updates').html(ui)			
 			//	$('#recent_updates').append('<h1>등록된 글이 없습니다.</h1>')
@@ -128,14 +128,15 @@ brd =(()=>{
 			console.log('글 제목 : ' + json.title)
 			console.log('글 내용 : ' + json.content )*/
 			$.ajax({
-				url : '/web/articles/',
+				url : x + '/articles/',
 				type : 'POST',
 				data : JSON.stringify(json),
 				dataType : 'json',
 				contentType : 'application/json',
 				success : d=>{
+					alert('write AJAX 성공')
 					$('#recent_updates div.container-fluid').remove()
-					recent_updates()
+					recent_updates(x)
 				},
 				error : e=>{
 					alert('AJAX 실패')

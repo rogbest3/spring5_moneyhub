@@ -1,3 +1,4 @@
+"use strict"
 var navi_vue = navi_vue || {}
 navi_vue = {
 	navi : ()=>{

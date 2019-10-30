@@ -1,5 +1,5 @@
 function setCookie(name, value) {
-        document.cookie = name + '=' + value ;
+    document.cookie = name + '=' + value ;
 }
 function getCookie(name) {
 	var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');

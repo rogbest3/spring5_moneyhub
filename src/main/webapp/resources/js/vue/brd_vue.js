@@ -1,3 +1,4 @@
+"use strict"
 var brd_vue = brd_vue || {}
 brd_vue = {
 	brd_head:()=>{

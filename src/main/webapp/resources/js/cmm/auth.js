@@ -2,7 +2,7 @@
 var auth = auth || {};
 auth =(()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.';
-	let _, js, css, img, auth_vue_js, brd_js, brd_vue_js, router_js, cookie_js;
+	let _, js, css, img, auth_vue_js, brd_js, brd_vue_js, router_js, cookie_js, adm_js, app_js;
 	let init =()=>{
 		_ = $.ctx()
 		js = $.js()
@@ -12,6 +12,8 @@ auth =(()=>{
 		brd_js = js + '/brd/brd.js'
 		router_js = js + '/cmm/router.js'
 		cookie_js = js + '/cmm/cookie.js'
+		adm_js = js + '/adm/adm.js'
+		app_js = js + '/app.js'
 	}
 	let onCreate =()=>{
 		init()
@@ -19,7 +21,8 @@ auth =(()=>{
     		$.getScript(auth_vue_js),	//	authjs 뒤에 , 후 기능 없으면 불러오기만 함
     		$.getScript(brd_js),
     		$.getScript(router_js),
-    		$.getScript(cookie_js)
+    		$.getScript(cookie_js),
+    		$.getScript(app_js)
     	)	
     	.done(()=>{
 			setContentView()
@@ -27,6 +30,7 @@ auth =(()=>{
 				e.preventDefault()
 				loginPage()
 				login()
+				access()
 		    		   
 			})	
 		}).fail(()=>{alert(WHEN_ERR)})
@@ -162,6 +166,7 @@ auth =(()=>{
 				if(d.msg === 'Success'){
 					loginPage()
 					login()
+					access()
 				}else{
 					alert('회원가입 실패')
 				}
@@ -172,8 +177,44 @@ auth =(()=>{
 			}		
 		})
 	}
-
-	return{ onCreate : onCreate, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
+	let access =()=>{								// alert   - 리턴 void
+		$('#a_go_admin').click(()=>{
+			let ok = confirm('사원입니까?')				// confirm - boolean 리턴
+			if(ok){
+				let aid = prompt('아이디를 입력하시오')
+			//	alert('입력한 사번 : ' + aid)
+				$.ajax({
+					url : _+'/admins/' + aid + '/access',
+					type : 'POST',					// GET이 맞지만 비번 보안 때문에 POST 사용
+					data : JSON.stringify({
+						aid : aid,
+						pwd : prompt('비밀번호를 입력하시오')
+					}),
+					dataType : 'json',
+					contentType : 'application/json',
+					success : d =>{
+						alert('d : ' + d.msg)
+						if(d.msg === 'SUCCESS'){
+							$.getScript(adm_js, ()=>{
+								alert('환영합니다. adm_js : ' + adm_js)
+								adm.onCreate()
+							})
+						}
+						else{
+							alert('접근권한이 없습니다. app_js : ' + app_js)
+							
+					//		app.run()
+						}
+					},
+					error : e =>{
+						alert('ajax 실패')
+					}
+				})
+				
+			}
+		})
+	}
+	return{ onCreate, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
 })();
 
 

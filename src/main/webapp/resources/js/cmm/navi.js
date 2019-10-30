@@ -1,3 +1,4 @@
+"use strict"
 var navi = navi || {}
 navi =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
