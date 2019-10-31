@@ -2,18 +2,18 @@
 var navi = navi || {}
 navi =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
-	let _, js, css, img, brd_js, navi_vue_js, auth_js, $cid
+	let _, js, css, img, brd_js, navi_vue_js, auth_js, $cid, app_js
 	let init=()=>{
 		_ = $.ctx()
 		js = $.js()
 		css = $.css()
 		img = $.img()
 		brd_js = js + '/brd/brd.js'
-		brd_vue_js = js + '/vue/brd_vue.js'
 		navi_vue_js = js + '/vue/navi_vue.js'
 		auth_js = js + '/cmm/auth.js'
 		app_js = js + '/app.js'
 		$cid = document.cookie
+//		alert('navi - js : '+ js)
 	}
 	let onCreate=()=>{
 		init()
@@ -27,7 +27,6 @@ navi =(()=>{
 		.fail(()=>{
 			alert(WHEN_ERR)
 		})
-		
 	}
 	
 	let setContentView=()=>{
@@ -40,7 +39,7 @@ navi =(()=>{
 		.click(e=>{
 			e.preventDefault()
 			alert('navi - _ : ' + _)
-			brd.write(_)
+			brd.write()
 		})
 		
 		$('<a>', {
@@ -54,7 +53,6 @@ navi =(()=>{
 			alert('로그아웃 클릭')
 			deleteCookie()
 			app.run(_)
-			
 		})
 	}
 	return {onCreate}

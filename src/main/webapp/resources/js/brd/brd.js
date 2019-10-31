@@ -48,15 +48,15 @@ brd =(()=>{
 				alert('AJAX 실패')
 			}
 		})*/
-		recent_updates(_)
+		recent_updates()
 	}
 	
-	let recent_updates=(x)=>{
+	let recent_updates=()=>{
 		$('#recent_updates .media').remove()
 		$('#recent_updates .d-block').remove()
 		$('#suggerstions').remove()
-		alert('recent_updates 들어옴, _ : ' + x)
-		$.getJSON(x+'/articles/', d=>{	// success이기 때문에 d를 가져올수 있음
+		alert('recent_updates 들어옴, _ : ' + _)
+		$.getJSON(_+'/articles/', d=>{	// success이기 때문에 d를 가져올수 있음
 			//	alert('글 목록 숫자 : ' + d.count)
 			//	$('#recent_updates').html(ui)			
 			//	$('#recent_updates').append('<h1>등록된 글이 없습니다.</h1>')
@@ -87,8 +87,11 @@ brd =(()=>{
 		})
 	}
 	
-	let write =(x)=>{
-		alert('write - _ : ' + x)
+	let write =()=>{
+		sessionStorage.setItem('ctx', '/web')
+		ctx : ()=>{ return sessionStorage.getItem('ctx')}
+		_ = $.ctx()
+		alert('brd - write - _ : ' + _)
 		$('#recent_updates').html(brd_vue.brd_write())// $cid ))
 	//	$('#write').val('테스트')	// input에 값 직접 입력
 		$('#suggerstions').remove()
@@ -123,7 +126,7 @@ brd =(()=>{
 					title : $('#write_form input[name="title"]').val(),
 					content : $('#write_form textarea[name="content"]').val()
 			}
-			alert('ID : ' + json.cid + ', _ : ' + x)
+			alert('ID : ' + json.cid + ', _ : ' + _)
 /*			console.log('ID : ' + json.uid)			보이지 않음
 			console.log('글 제목 : ' + json.title)
 			console.log('글 내용 : ' + json.content )*/
@@ -136,7 +139,7 @@ brd =(()=>{
 				success : d=>{
 					alert('write AJAX 성공')
 					$('#recent_updates div.container-fluid').remove()
-					recent_updates(x)
+					recent_updates()
 				},
 				error : e=>{
 					alert('AJAX 실패')

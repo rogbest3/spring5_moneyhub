@@ -34,7 +34,7 @@ navi_vue = {
 		'        </form>'+
 		'      </div>'+
 		'    </nav>'+
-		'    <div class="nav-scroller bg-white box-shadow">'+
+		'    <div id="nav_scroller_id" class="nav-scroller bg-white box-shadow">'+
 		'      <nav class="nav nav-underline">'+
 		'        <a class="nav-link active" href="#">Dashboard</a>'+
 		'        <a class="nav-link" href="#">'+
@@ -50,5 +50,6 @@ navi_vue = {
 		'        <a class="nav-link" href="#">Link</a>'+
 		'      </nav>'+
 		'    </div>'
+		
 	}	
 }

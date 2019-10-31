@@ -314,6 +314,7 @@ auth_vue ={
 		'   <!-- Bootstrap core CSS -->'+
 		'<link href="https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">'+
 		'<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">'+
+		'<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">'+	
 		'   <style>'+
 		'      .bd-placeholder-img {'+
 		'        font-size: 1.125rem;'+
@@ -335,7 +336,7 @@ auth_vue ={
 	},
 	login_body : x=>{
 		return '<body class="text-center">'+
-		'    <form class="form-signin">'+
+		'    <form id="login_form_id" class="form-signin">'+
 		'  <img class="mb-4" src="'+ x.img +'/bootstrap-solid.svg" alt="" width="72" height="72">'+
 		'  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>'+
 		'  <label for="inputEmail" class="sr-only">Email address</label>'+

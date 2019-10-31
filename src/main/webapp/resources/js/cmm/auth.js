@@ -22,7 +22,8 @@ auth =(()=>{
     		$.getScript(brd_js),
     		$.getScript(router_js),
     		$.getScript(cookie_js),
-    		$.getScript(app_js)
+    		$.getScript(app_js),
+    		$.getScript(adm_js)
     	)	
     	.done(()=>{
 			setContentView()
@@ -162,7 +163,7 @@ auth =(()=>{
 				}),
 			contentType : 'application/json',
 			success : d => {	// sender, d가 자바에서 map, d.cid map의 키값
-				alert('AJAX 성공 아이디 : '+ d.msg);
+			//	alert('AJAX 성공 아이디 : '+ d.msg);
 				if(d.msg === 'Success'){
 					loginPage()
 					login()
@@ -179,7 +180,8 @@ auth =(()=>{
 	}
 	let access =()=>{								// alert   - 리턴 void
 		$('#a_go_admin').click(()=>{
-			let ok = confirm('사원입니까?')				// confirm - boolean 리턴
+			adm.onCreate()
+		/*	let ok = confirm('사원입니까?')				// confirm - boolean 리턴
 			if(ok){
 				let aid = prompt('아이디를 입력하시오')
 			//	alert('입력한 사번 : ' + aid)
@@ -193,16 +195,13 @@ auth =(()=>{
 					dataType : 'json',
 					contentType : 'application/json',
 					success : d =>{
-						alert('d : ' + d.msg)
 						if(d.msg === 'SUCCESS'){
 							$.getScript(adm_js, ()=>{
-								alert('환영합니다. adm_js : ' + adm_js)
 								adm.onCreate()
 							})
 						}
 						else{
-							alert('접근권한이 없습니다. app_js : ' + app_js)
-							
+							alert('접근권한이 없습니다. app_js : ' + app_js)			
 					//		app.run()
 						}
 					},
@@ -211,7 +210,7 @@ auth =(()=>{
 					}
 				})
 				
-			}
+			}*/
 		})
 	}
 	return{ onCreate, join, login }	// app에서 auth.onCreate() 호출했기 때문에 return에 onCreate 사용
