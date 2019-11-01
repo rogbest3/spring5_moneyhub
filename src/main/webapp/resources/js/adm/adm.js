@@ -4,8 +4,8 @@ adm =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
 	let _, js, css, img, navi_vue_js, navi_js
 	let init=()=>{
-		sessionStorage.setItem('ctx', '/web')
-		ctx : ()=>{ return sessionStorage.getItem('ctx')}
+/*		sessionStorage.setItem('ctx', '/web')
+		_ = sessionStorage.getItem('ctx')}	*/
 		_ = $.ctx()
 		js = $.js()
 		css = $.css()
@@ -16,7 +16,7 @@ adm =(()=>{
 	
 	let onCreate=()=>{
 		init()
-//		alert('js : '+ js)
+		alert('js : '+ js)
 		$.when(
 			$.getScript(navi_vue_js),
 			$.getScript(navi_js)
@@ -43,7 +43,6 @@ adm =(()=>{
 		.css({ width : '80%', height : '80%', border :'2px solid black', margin: '0 auto' }) 
 		.appendTo('body')	// body에 오버로딩
 		
-
 		$.each(
 			[{ id : 'left', width : '20%'}, 
 			{ id : 'right', width : '80%'}], 
@@ -92,22 +91,40 @@ adm =(()=>{
 		$('#left div').css({border: '2px solid black', margin: 'auto 0', 'line-height': '50px'})
 	}
 	let webCrawl =()=>{
-		$('<form id="s_form_id" action="">'+
-			'  <select name="news" size="4" multiple>'+
+		$('#right').empty()
+		$('<form id="crawl_form_id" action="">'+
+			'  <select name="site" size="4" multiple>'+
 			'  </select>'+
 			'  <br>'+
-			'  <button id="news_btn">이동</button>'+
+/*			'  <button id="news_btn">이동</button>'+
+			'</form>'+
+			'<form class="form-inline my-2 my-lg-0">'+*/
+			'  <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">'+
+//			'  <button id="crawl_btn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>'+
 			'</form>')
+		.addClass('form-inline my-2 my-lg-0')
 		.appendTo('#right')
+		$('#crawl_form_id').css({ 'padding-top' : '5%' })
+		$('#crawl_form_id select').css({ 'margin-left' : '30%' , 'margin-right' : '1%'})
 		
-		$.each(['정치', '경제', '사회', '과학'], (i, j)=>{
-			$('<option value="">'+ j +'</option>')
-			.appendTo('#s_form_id select')
+		$.each(['naver.com', 'daum.net', 'google.com', 'youtube.com'], (i, j)=>{
+			$('<option value="'+ j +'">'+ j +'</option>')
+			.appendTo('#crawl_form_id select')
 		})
 		
-		$('#news_btn')
-		.click(()=>{
-			$().appendTo('#right')
+		$('<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>')
+		.appendTo('#crawl_form_id')
+		.click(e=>{
+			e.preventDefault()		
+			alert($('form#crawl_form_id select[name="site"]').val() + ', '+ $('form#crawl_form_id input[type="text"]').val())
+			$.getJSON(_	
+					+ '/tx/crawling/' 
+					+ $('form#crawl_form_id select[name="site"]').val()
+					+'/'
+					+ $('form#crawl_form_id input[type="text"]').val(), 
+			d=>{		// form 태그의 id란 뜻
+				alert(d.msg)
+			})
 		})
 		
 	}

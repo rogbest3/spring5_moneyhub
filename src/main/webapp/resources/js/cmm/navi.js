@@ -23,6 +23,7 @@ navi =(()=>{
 		)
 		.done(()=>{
 			setContentView()
+	//		alert('navi oncre - _ : ' + _)
 		})
 		.fail(()=>{
 			alert(WHEN_ERR)
@@ -30,6 +31,7 @@ navi =(()=>{
 	}
 	
 	let setContentView=()=>{
+//		alert('navi set - _ : ' + _)
 		$('<a>', {
 			href : '#',
 			text : '글쓰기'
@@ -38,7 +40,7 @@ navi =(()=>{
 		.appendTo('#go_write')	
 		.click(e=>{
 			e.preventDefault()
-			alert('navi - _ : ' + _)
+			alert('navi w c - _ : ' + _)
 			brd.write()
 		})
 		

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.moneyhub.web.aop.TxService;
 import com.moneyhub.web.cli.Client;
 import com.moneyhub.web.cli.ClientCtrl;
 import com.moneyhub.web.cmm.IConsumer;
@@ -32,11 +33,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class ArticleCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(ArticleCtrl.class);
-	@Autowired Map<String, Object> map;
+	@Autowired Map<String, Object> articleMap;
 	@Autowired Client client;
 	@Autowired Printer printer;
 	@Autowired ArticleMapper articleMapper;
 	@Autowired List<Article> list;
+	@Autowired TxService txService;
 	
 	@PostMapping("/")
 	public Map<?, ?> write(@RequestBody Article param){
@@ -45,13 +47,13 @@ public class ArticleCtrl {
 		
 		IConsumer<Article> c = t -> articleMapper.insertArticle(param);
 		c.accept(param);
-		map.clear();
-		map.put("msg", "SUCCESS");
+		articleMap.clear();
+		articleMap.put("msg", "SUCCESS");
 		
 /*		ISupplier<String> cc =  () -> articleMapper.countArticle();
 		printer.accept("count : " + cc.get());
 		map.put("count", cc.get());*/
-		return map;
+		return articleMap;
 	}
 	@GetMapping("/")
 	public List<Article> list(){
@@ -69,14 +71,16 @@ public class ArticleCtrl {
 		return seqCount;
 	}*/
 	
+
+	
 	@GetMapping("/count")
 	public Map<?, ?> count(){
 		printer.accept("count 들어옴");
 		ISupplier<String> c =  () -> articleMapper.countArticle();
-		map.clear();
-		map.put("count", c.get());
+		articleMap.clear();
+		articleMap.put("count", c.get());
 		printer.accept("count : " + c.get());
-		return map;
+		return articleMap;
 	}
 
 	@PutMapping("/{artSeq}")
@@ -87,9 +91,9 @@ public class ArticleCtrl {
 		IConsumer<Article> u =  t -> articleMapper.updateArticle(param);
 		u.accept(param);
 		printer.accept("update 나감 - "+param.toString());
-		map.clear();
-		map.put("title", "title");
-		return map;
+		articleMap.clear();
+		articleMap.put("title", "title");
+		return articleMap;
 	}
 	
 	@DeleteMapping("/{artSeq}")
@@ -97,7 +101,7 @@ public class ArticleCtrl {
 		printer.accept("delete로 들어옴");
 		IConsumer<String> d = t -> articleMapper.deleteArticle(artSeq);
 		d.accept(artSeq);
-		map.clear();
-		return map;
+		articleMap.clear();
+		return articleMap;
 	}
 }

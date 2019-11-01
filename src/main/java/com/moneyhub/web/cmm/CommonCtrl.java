@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class CommonCtrl {
+public class CommonCtrl { // POJO 방식 - extend 없음
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommonCtrl.class);
 	

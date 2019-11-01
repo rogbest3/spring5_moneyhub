@@ -1,10 +1,13 @@
 "use strict"
+sessionStorage.setItem('ctx', '/web')
+var	_ = sessionStorage.getItem('ctx')
+
 var brd = brd || {}
 brd =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
-	let _, js, css, img, brd_vue_js, navi_js, navi_vue_js
+	let js, css, img, brd_vue_js, navi_js, navi_vue_js
 	let init =()=>{
-		_ = $.ctx()
+	//	_ = $.ctx()
 		js = $.js()
 		css = $.css()
 		img = $.img()
@@ -88,10 +91,12 @@ brd =(()=>{
 	}
 	
 	let write =()=>{
-		sessionStorage.setItem('ctx', '/web')
+/*		sessionStorage.setItem('ctx', '/web')
 		ctx : ()=>{ return sessionStorage.getItem('ctx')}
-		_ = $.ctx()
+		_ = $.ctx()*/
 		alert('brd - write - _ : ' + _)
+		alert('js : ' + js)		// js undefined
+		alert('brd_vue_js : ' + brd_vue_js)
 		$('#recent_updates').html(brd_vue.brd_write())// $cid ))
 	//	$('#write').val('테스트')	// input에 값 직접 입력
 		$('#suggerstions').remove()
@@ -131,7 +136,7 @@ brd =(()=>{
 			console.log('글 제목 : ' + json.title)
 			console.log('글 내용 : ' + json.content )*/
 			$.ajax({
-				url : x + '/articles/',
+				url : _ + '/articles/',
 				type : 'POST',
 				data : JSON.stringify(json),
 				dataType : 'json',

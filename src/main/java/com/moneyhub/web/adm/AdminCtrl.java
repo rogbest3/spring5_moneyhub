@@ -1,5 +1,6 @@
 package com.moneyhub.web.adm;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -25,26 +26,31 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class AdminCtrl {
 	private static final Logger logger = LoggerFactory.getLogger(AdminCtrl.class);
-	@Autowired Map<String, Object> map;
+//	@Autowired Map<String, Object> adminMap;
 	@Autowired AdminMapper adminMapper;
 	@Autowired Printer printer;
+	
 	@PostMapping("/")
 	public Map<?, ?> resister(Admin param){
+		HashMap<String, Object> map = new HashMap<>();
 		IConsumer<Admin> a = t -> adminMapper.insertAdmin(param);
 		a.accept(param);
 		return map;
 	}
+	
 	@PostMapping("/{aid}/access")
 	public Map<?, ?> access(@PathVariable String aid, @RequestBody Admin param) {
-		printer.accept("access 들어옴");
-		printer.accept(param.toString());
-		IFunction<Admin, Admin> f = t -> adminMapper.selectAdminByIdPw(param);
-		String r = (f.apply(param)!=null) ? "SUCCESS" : "FAIL";
-		printer.accept("리턴값 : "+r);
-		map.clear(); 
-		map.put("msg", r);
-		return map;
-	}
+	HashMap<String, Object> map = new HashMap<>();
+	printer.accept("access 들어옴");
+	printer.accept(param.toString());
+	IFunction<Admin, Admin> f = t -> adminMapper.selectAdminByIdPw(param);
+	String r = (f.apply(param)!=null) ? "SUCCESS" : "FAIL";
+	printer.accept("리턴값 : "+r);
+	map.clear(); 
+	map.put("msg", r);
+	return map;
+}
+
 	@PutMapping("/{aid}")
 	public String update(@PathVariable String aid, @RequestBody Admin param) {
 		IConsumer<Admin> c = t -> adminMapper.updateAdmin(param);
