@@ -93,7 +93,7 @@ adm =(()=>{
 	let webCrawl =()=>{
 		$('#right').empty()
 		$('<form id="crawl_form_id" action="">'+
-			'  <select name="site" size="4" multiple>'+
+			'  <select name="site" size="1" >'+	//	multiple
 			'  </select>'+
 			'  <br>'+
 /*			'  <button id="news_btn">이동</button>'+
@@ -104,7 +104,7 @@ adm =(()=>{
 			'</form>')
 		.addClass('form-inline my-2 my-lg-0')
 		.appendTo('#right')
-		$('#crawl_form_id').css({ 'padding-top' : '5%' })
+		$('#crawl_form_id').css({padding : '0 auto', 'padding-top' : '5%'  })	//'padding-top' : '5%' 
 		$('#crawl_form_id select').css({ 'margin-left' : '30%' , 'margin-right' : '1%'})
 		
 		$.each(['naver.com', 'daum.net', 'google.com', 'youtube.com'], (i, j)=>{
@@ -116,18 +116,16 @@ adm =(()=>{
 		.appendTo('#crawl_form_id')
 		.click(e=>{
 			e.preventDefault()		
-			alert($('form#crawl_form_id select[name="site"]').val() + ', '+ $('form#crawl_form_id input[type="text"]').val())
-			$.getJSON(_	
-					+ '/tx/crawling/' 
-					+ $('form#crawl_form_id select[name="site"]').val()
-					+'/'
-					+ $('form#crawl_form_id input[type="text"]').val(), 
-			d=>{		// form 태그의 id란 뜻
-				alert(d.msg)
-			})
+			let arr = [$('form#crawl_form_id select[name="site"]').val(),
+						$('form#crawl_form_id input[type="text"]').val()]
+			
+			if(	!$.fn.nullChecker(arr) ){			
+		//		alert(arr[0] + ', '+ arr[1])
+				$.getJSON( _	+ '/tx/crawling/' + arr[0] +'/' + arr[1], d=>{		// form 태그의 id란 뜻
+					alert(d.msg)
+				})
+			}
 		})
-		
 	}
-	
 	return {onCreate}
 })()
