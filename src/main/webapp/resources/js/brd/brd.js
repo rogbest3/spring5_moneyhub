@@ -5,7 +5,7 @@ var	_ = sessionStorage.getItem('ctx')
 var brd = brd || {}
 brd =(()=>{
 	const WHEN_ERR = '호출하는 js 파일을 찾지 못했습니다.'
-	let js, css, img, brd_vue_js, navi_js, navi_vue_js
+	let js, css, img, brd_vue_js, navi_js, navi_vue_js, page_vue_js
 	let init =()=>{
 	//	_ = $.ctx()
 		js = $.js()
@@ -14,13 +14,15 @@ brd =(()=>{
 		brd_vue_js = js + '/vue/brd_vue.js'
 		navi_js = js + '/cmm/navi.js'
 		navi_vue_js = js + '/vue/navi_vue.js'
+		page_vue_js = js + '/vue/page_vue.js'
 	}
 	let onCreate =()=>{	// action은 전부 onCreate에서 
 		init()
 		$.when(
 			$.getScript(brd_vue_js),
 			$.getScript(navi_vue_js),
-			$.getScript(navi_js)
+			$.getScript(navi_js),
+			$.getScript(page_vue_js)
 		)
 		.done(()=>{
 			setContentView()
@@ -51,22 +53,19 @@ brd =(()=>{
 				alert('AJAX 실패')
 			}
 		})*/
-		recent_updates()
+		
+		recent_updates(1)
 	}
 	
-	let recent_updates=()=>{
+	let recent_updates=x=>{
+		alert('호출된 페이지 번호 : ' + x )
 		$('#recent_updates .media').remove()
 		$('#recent_updates .d-block').remove()
 		$('#suggerstions').remove()
 		alert('recent_updates 들어옴, _ : ' + _)
-		$.getJSON(_+'/articles/', d=>{	// success이기 때문에 d를 가져올수 있음
-			//	alert('글 목록 숫자 : ' + d.count)
-			//	$('#recent_updates').html(ui)			
-			//	$('#recent_updates').append('<h1>등록된 글이 없습니다.</h1>')
-			// i - key( index), j - value ( article	) json
-	//		let i = 0
+		$.getJSON(_+'/articles/page/' + x, d=>{	// success이기 때문에 d를 가져올수 있음
 			let res = ''
-			$.each(d, (i, j)=>{
+			$.each(d.articles, (i, j)=>{
 				$('<div class="media text-muted pt-3">'+
 		        '<img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2232%22%20height%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16dfcdddb72%20text%20%7B%20fill%3A%23007bff%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A2pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16dfcdddb72%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22%23007bff%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%2211.5390625%22%20y%3D%2216.9%22%3E32x32%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" data-holder-rendered="true">'+
 				'          <p id="id_'+ i +'" class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">'+
@@ -87,7 +86,30 @@ brd =(()=>{
 					detail(j)
 				})
 			})
+			
+			$(page_vue.page())
+			.appendTo('#recent_updates')
+			$('#pagination').empty()
+			
+			$.each(d.pages, (i,j)=>{                                                    
+			      $('<li class="page-item"><a class="page-link" href="#">'+ j +'</a></li>')
+			      .appendTo('#pagination')
+			})
+			
+			/*$.each(d, (i, j)=>{
+				if( i%5 === 0){
+					$('<li class="page-item"><a class="page-link" href="#">'+ (i/5 + 1) +'</a></li>')
+					.appendTo('#pagination')
+				}
+			})
+			$('<li class="page-item"><a class="page-link" href="#">Next</a></li>')
+			.appendTo('#pagination')
+			$('<li class="page-item"><a class="page-link" href="#">Previous</a></li>')
+			.prependTo('#pagination')
+			$('#pagination').css({ 'padding-left' : '10%' })*/
 		})
+		
+		
 	}
 	
 	let write =()=>{
@@ -100,6 +122,7 @@ brd =(()=>{
 		$('#recent_updates').html(brd_vue.brd_write())// $cid ))
 	//	$('#write').val('테스트')	// input에 값 직접 입력
 		$('#suggerstions').remove()
+		$('#pagination').remove()
 		
 		$('#write_form input[name="writer"]').val(getCookie("CLIENTID"))
 		

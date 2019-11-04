@@ -57,7 +57,7 @@ brd_vue = {
 		'          <a href="#">All updates</a>'+
 		'        </small>'+
 		'      </div>'+
-
+//		'	   <div id="pagination"></div>'+		
 		'      <div id="suggerstions" class="my-3 p-3 bg-white rounded box-shadow">'+
 		'        <h6 class="border-bottom border-gray pb-2 mb-0">Suggestions</h6>'+
 		'        <div class="media text-muted pt-3">'+

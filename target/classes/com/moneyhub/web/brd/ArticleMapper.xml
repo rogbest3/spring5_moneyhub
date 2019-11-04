@@ -15,9 +15,21 @@
 	    SELECT COUNT(ARTSEQ)
 		FROM ARTICLE
     </select>
-    <select id="selectAll" resultType="Article">
+<!--     <select id="selectAll" resultType="Article">
     	SELECT A.BOARD_TYPE AS boardType, A.* FROM ARTICLE A
-    </select>
+    </select> 
+    select r1.* from (select r0.* 
+	from article r0
+	order by ARTSEQ desc) R1
+	limit 0, 5 -->
+	
+	<select id="selectAll" resultType="Article">
+    	select A.BOARD_TYPE AS boardType, A.* from (select * 
+		from article
+		order by ARTSEQ DESC) A
+		limit 0, 5
+    </select> 
+    
     <delete id="deleteArticle" parameterType="string">
     	DELETE FROM ARTICLE 
 		WHERE ARTSEQ = #{artSeq}

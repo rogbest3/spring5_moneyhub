@@ -1,5 +1,6 @@
 package com.moneyhub.web.brd;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class ArticleCtrl {
 		map.put("count", cc.get());*/
 		return articleMap;
 	}
-	@GetMapping("/")
+/*	@GetMapping("/")	원본
 	public List<Article> list(){
 		printer.accept("list 들어옴");
 		list.clear();
@@ -63,6 +64,18 @@ public class ArticleCtrl {
 		printer.accept("전체 글목록 : " + c.get());
 		return c.get();
 	}
+	*/
+	@GetMapping("/page/{pageNo}")
+	public Map<?, ?> list(@PathVariable String pageNo){
+		printer.accept("list 들어옴, pageNo : " + pageNo);
+		ISupplier <List<Article>> c = () -> articleMapper.selectAll();
+		printer.accept("해당 페이지 글목록 : " + c.get());
+		articleMap.clear();
+		articleMap.put("articles", c.get());
+		articleMap.put("pages", Arrays.asList(1, 2, 3, 4, 5));
+		return articleMap;
+	}
+	
 /*	@GetMapping("/")
 	public int articleCount() {	// json으로 넘어가기 때문에 int 안넘겨도 됨 js에서 받을 때 무조건 string 이기 때문에
 		printer.accept("articleCount 들어옴");
