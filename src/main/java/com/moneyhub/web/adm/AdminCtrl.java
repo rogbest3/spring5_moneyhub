@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,17 +41,29 @@ public class AdminCtrl {
 	
 	@PostMapping("/{aid}/access")
 	public Map<?, ?> access(@PathVariable String aid, @RequestBody Admin param) {
-	HashMap<String, Object> map = new HashMap<>();
-	printer.accept("access 들어옴");
-	printer.accept(param.toString());
-	IFunction<Admin, Admin> f = t -> adminMapper.selectAdminByIdPw(param);
-	String r = (f.apply(param)!=null) ? "SUCCESS" : "FAIL";
-	printer.accept("리턴값 : "+r);
-	map.clear(); 
-	map.put("msg", r);
-	return map;
-}
-
+		HashMap<String, Object> map = new HashMap<>();
+		printer.accept("access 들어옴");
+		printer.accept(param.toString());
+		IFunction<Admin, Admin> f = t -> adminMapper.selectAdminByIdPw(param);
+		String r = (f.apply(param)!=null) ? "SUCCESS" : "FAIL";
+		printer.accept("리턴값 : "+r);
+		map.clear(); 
+		map.put("msg", r);
+		return map;
+	}
+	
+	@PostMapping("/{aid}/access2")
+	public Map<?, ?> access2(@PathVariable String aid, @RequestBody HashMap<String, Object> param) {
+		HashMap<String, Object> map = new HashMap<>();
+	
+		IFunction<Admin, Admin> f = t -> adminMapper.selectAdmin(param);
+/*		String r = (f.apply(param)!=null) ? "SUCCESS" : "FAIL";
+		printer.accept("리턴값 : "+r);
+		map.clear(); 
+		map.put("msg", r);*/
+		return map;
+	}
+	
 	@PutMapping("/{aid}")
 	public String update(@PathVariable String aid, @RequestBody Admin param) {
 		IConsumer<Admin> c = t -> adminMapper.updateAdmin(param);

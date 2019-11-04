@@ -28,5 +28,6 @@
         SELECT COUNT(*) FROM CLIENT
 		WHERE CID LIKE #{cid}
     </select>
+    
   
 </mapper>

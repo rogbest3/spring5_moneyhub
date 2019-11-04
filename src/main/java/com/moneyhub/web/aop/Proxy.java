@@ -33,8 +33,8 @@ public class Proxy {
 												.method(Connection.Method.GET)
 												.execute();
 			Document document = response.parse();
-		//	String html = document.html();
-			String text = document.text();
+			String text = document.html();
+		//	String text = document.text();
 		//	System.out.println(html);
 			p.accept("크롤링한 텍스트 \n" + text);
 			proxyList.add(text);

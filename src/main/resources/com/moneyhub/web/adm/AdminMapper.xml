@@ -9,4 +9,32 @@
 		SELECT * FROM ADMIN 
 		WHERE AID LIKE #{aid} AND PWD LIKE #{pwd}
 	</select>
+<!-- 	astate, pos, aid, pwd -->
+	
+<!-- 	<select id="selectAdminByIdPw" resultType="Admin" parameterType="hashMap">
+		SELECT * FROM ADMIN 
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			WHERE ${aid} LIKE #{aid} 
+		싱글쿼터   없고  			있고
+		</trim>
+		<if test="pwd != null">
+			AND PWD LIKE #{pwd}
+		</if>
+		<if test="pos != null">
+			AND pos like #{pos}
+		</if>
+	</select> 
+	
+	<select id="selectAdminByIdPw" resultType="Admin" parameterType="hashMap">
+		SELECT * FROM ADMIN 
+		<trim prefix="WHERE" prefixOverrides="AND |OR">
+			WHERE ${aid} LIKE #{aid} 
+		</trim>
+		<if test="pwd != null">
+			AND PWD LIKE #{pwd}
+		</if>
+		<if test="pos != null">
+			AND pos like #{pos}
+		</if>
+	</select> -->
 </mapper>

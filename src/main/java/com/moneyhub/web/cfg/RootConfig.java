@@ -9,17 +9,20 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+/*@EnableAspectJAutoProxy
+@EnableTransactionManagement*/
 @Configuration
 @MapperScan(basePackages = {"com.moneyhub.web"})
 @ComponentScan(basePackages = { "com.moneyhub.web" })
 //파일 인식 못할때 사용
-//@Import({
-//	MybatisConfig.class, ServletConfig.class
-//})
-//
+@Import({
+	MybatisConfig.class, ServletConfig.class
+})
+
 public class RootConfig {
 	@Bean
 	public DataSource dataSource() {
@@ -30,5 +33,10 @@ public class RootConfig {
 		hikariConfig.setPassword("moneyhub");	
 		HikariDataSource dataSource = new HikariDataSource(hikariConfig);
 		return dataSource;
+	}
+	
+	@Bean
+	public DataSourceTransactionManager txManager() {
+		return new DataSourceTransactionManager(dataSource());
 	}
 }
